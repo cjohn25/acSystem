@@ -220,34 +220,34 @@
                                         <br>
                                         <label class="col-sm-2 control-label">Days Of The Week:</label>
                                         <div class="col-sm-10">
-                                            <ul class="icheck-list" style="list-style-type:none !important;" id="checkDay">
+                                            <ul class="icheck-list" style="list-style-type:none !important;" id="checkDayModal">
                                                 <li class="input-group col-sm-1 selected">
                                                     <label>Mon</label>
-                                                    <input type="checkbox" class="checkDay" name="checkDay">
+                                                    <input type="checkbox" class="checkDayModal" name="checkDayModal">
                                                 </li>
                                                 <li class="input-group col-sm-1 selected">
                                                     <label>Tue</label>
-                                                    <input type="checkbox" class="checkDay" name="checkDay">
+                                                    <input type="checkbox" class="checkDayModal" name="checkDayModal">
                                                 </li>
                                                 <li class="input-group col-sm-1 selected">
                                                     <label>Wed</label>
-                                                    <input type="checkbox" class="checkDay" name="checkDay">
+                                                    <input type="checkbox" class="checkDayModal" name="checkDayModal">
                                                 </li>
                                                 <li class="input-group col-sm-1 selected">
                                                     <label>Thu</label>
-                                                    <input type="checkbox" class="checkDay" name="checkDay">
+                                                    <input type="checkbox" class="checkDayModal" name="checkDayModal">
                                                 </li>
                                                 <li class="input-group col-sm-1 selected">
                                                     <label>Fri</label>
-                                                    <input type="checkbox" class="checkDay" name="checkDay">
+                                                    <input type="checkbox" class="checkDayModal" name="checkDayModal">
                                                 </li>
                                                 <li class="input-group col-sm-1 selected">
                                                     <label>Sat</label>
-                                                    <input type="checkbox" class="checkDay" name="checkDay">
+                                                    <input type="checkbox" class="checkDayModal" name="checkDayModal">
                                                 </li>
                                                 <li class="input-group col-sm-1 selected">
                                                     <label>Sun</label>
-                                                    <input type="checkbox" class="checkDay" name="checkDay">
+                                                    <input type="checkbox" class="checkDayModal" name="checkDayModal">
                                                 </li>
                                             </ul>
                                         </div>
@@ -449,7 +449,7 @@
                     dataType: 'json',
                     success: function (data) {
                         console.log(data);
-                        location.reload();
+                        // location.reload();
                     },
                     error: function (data) {
                         var getErrorMessage = "";

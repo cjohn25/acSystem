@@ -94,23 +94,16 @@ class calendarController extends Controller
         $arrayDay = [];
         $extratingDay = [];
         $getDay =  timeschedulesetup::where('sched_ID','>', 0)->get();
-         
-        // $getDivice[] = Device::select('device_ID')->where('device_ID','=',$dd->device_ID)->first(); 
-        // $extratingDay = explode(',', $getDay); 
-        
+          
         $getLength = [];
         $collection = collect([1, 2, 3, 4, 5, 6, 7]);
 
         $chunks = $collection->crossJoin(['a', 'b']);
         $chunks->all();  
         foreach($getDay as $item)
-        {    
-                // $getLength[] = explode(',', $item->set_day);    
-                //     $extratingDay[]= $item->set_day.">>>0.>". $item->sched_ID;
+        {     
                 $extratingDay[] = $this->Scheday($item->set_day); 
-                
-                // $extratingDay[]= $item->set_day;
- 
+                  
             } 
         
 
@@ -161,14 +154,13 @@ class calendarController extends Controller
     //save instance for time schedule
     public function saveSchedule(Request $request)
     {
+        ///Diri ta ma compare
         $request->validate([
             'days' => 'required',  
             'hidden_rooms' => 'required',
             'timeIn' => 'required',
             'timeOut' => 'required'
-        ]);
-        // $getID = timeschedulesetup::where('sched_ID','=',)->where('device_ID','=',$dd->device_ID)->first(); 
-
+        ]);  
         $myArray = []; 
         $getDivice = [];
         $getDevice_ID = [];
@@ -178,11 +170,12 @@ class calendarController extends Controller
         $initialShedule = new timeschedulesetup;
         $arrayRooms = explode(',', $request->get('hidden_rooms')); 
         $arrayDays = explode(',', $request->get('days')); 
+        $getScheduleForUpdate = [];
         foreach($arrayRooms as $roomsData){ 
             $myArray[] = $roomsData;
             $initialShedule->room_ID = $myArray;
             $getRoom[] = Room::where('id','=',$roomsData)->first(); 
-        }
+        } 
         foreach($getRoom as $dd)
         { 
             $getDivice[] = Device::select('device_ID')->where('device_ID','=',$dd->device_ID)->first(); 
@@ -192,18 +185,33 @@ class calendarController extends Controller
             $getDevice_ID[] = $dd->device_ID;
             $initialShedule->device_ID = $getDevice_ID;
         } 
-        // foreach($arrayDays as $dd)
-        // {
-        //     $getDays[] = $dd;
+        foreach($arrayDays as $dd)
+        {
+            $getDays[] = $dd;
             
-        //     $initialShedule->days = $getDays;
-        // } 
+            $initialShedule->days = $getDays;
+        } 
+
         $getTimeIn = "";
         $getTimeOut = "";
         $getStringDays = "";
         $getTimeOut = $request->get('timeOut');
         $getTimeIn= $request->get('timeIn');
         $getStringDays = $request->get('days');
+
+        //comparing roomID and Update Entity
+        if(timeschedulesetup::where('room_ID','=',$roomsData)->where('time_in','=',$getTimeIn)->where('time_out','=',$getTimeOut)->first() != null){
+            //  $dataTime = []; 
+            foreach($myArray as $dateItem){
+                 $dataTime = timeschedulesetup::where('room_ID','=',$dateItem)->where('time_in','=',$getTimeIn)->where('time_out','=',$getTimeOut)->first();  
+                 $dataTime->time_in = $getTimeIn;
+                 $dataTime->time_out = $getTimeOut;
+                 $dataTime->set_day = $getStringDays;  
+                 $dataTime->save(); 
+             }  
+        }
+        else
+        
         for($i=0; $i<count($getDivice); $i++){
                $object = new timeschedulesetup();
                $object->room_ID = $initialShedule->room_ID[$i];
@@ -213,7 +221,8 @@ class calendarController extends Controller
                $object->time_in = $getTimeIn;
                $object->save();
         }
-
+        //end of declaration of comparing roomID
+ 
         
         Log::info('Someone added on calendar!', [
             'login id' => Auth::user()->id,
